@@ -112,6 +112,21 @@ contextMenuItemsForElement:(NSDictionary *)element
 	return [historyController valueForKeyPath:[@"repository.config." stringByAppendingString:config]];
 }
 
+- (NSString *) getConfigPreference:(NSString *)feature
+{
+  NSNumber *onoff = [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardEnable"];
+  if([onoff intValue]==0)
+    return @"ERROR";
+  if([feature isEqualToString:@"reviewBoardUrl"])
+		return [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardUrl"];
+  else if([feature isEqualToString:@"reviewBoardUsername"])
+		return [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardUsername"];
+  else if([feature isEqualToString:@"reviewBoardPassword"])
+		return [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardPassword"];
+  else
+    return @"ERROR";
+}
+
 - (void) finalize
 {
 	[historyController removeObserver:self forKeyPath:@"webCommit"];

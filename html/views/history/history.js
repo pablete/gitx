@@ -116,6 +116,65 @@ var gistie = function() {
 	}
 }
 
+var reviewboard_it = function(confirmation_message) {
+  var notification_text;
+  if (Controller.isFeatureEnabled_("reviewBoard")) {
+    rb_url      = Controller.getConfigPreference_("reviewBoardUrl");
+    rb_username = Controller.getConfigPreference_("reviewBoardUsername");
+    rb_password = Controller.getConfigPreference_("reviewBoardPassword");
+    rb_cookie = reviewboard_cookie(rb_url, rb_username, rb_password);
+    Controller.log_("------");
+    Controller.log_(rb_cookie);
+    if (rb_cookie == null) {
+      notification_text = '<span style="background: red;color:white;">Sorry, there is a problem authenticating to ReviewBoard. Go to Preferences and check your credentials.</span>';
+    }
+    else {
+      notification_text = 'This will create a reviewboard diff of your commit<br>' +
+      'Are you sure you want to continue?<br/><br/>' +
+      '<form id="reviewboard">' +
+      '<select name="repository_id">'+reviewboard_repos(rb_url, rb_cookie)+'</select> ' +
+      '</form>' +
+      '<a href="#" onClick="reviewboard_post();return false;" style="color: green;">Post to ReviewBoard.</a> | ' +
+      '<a href="#" onClick="hideNotification();return false;" style="color: red;">Cancel.</a>';
+    }
+  }
+  else {
+    notification_text = '<span style="background: red;color:white;">Sorry, ReviewBoard is not enabled. Go to Preferences and enable it.</span>'
+  }
+   notify(notification_text, 0);
+  // Hide img#spinner, since it?s visible by default
+  $("spinner").style.display = "none";
+}
+
+var reviewboard_post = function(rb_repository_id) {
+  var rb_repository_id =  $('reviewboard').elements[0].value;
+	notify("Uploading code to ReviewBoard..", 0);
+  var rb_review_request_id = reviewboard_requestnew(rb_url, rb_cookie, rb_repository_id);
+  var rb_payload = commit.object.patch();
+  var rb_boundary = hex_md5(rb_review_request_id);
+  var rb_content = encode_multipart_formdata(rb_boundary, rb_payload);
+	var upload = new XMLHttpRequest();
+  upload.onreadystatechange = function() {
+    if (upload.readyState == 4 && upload.status >= 200 && upload.status < 300) {
+      notify("Code uploaded to ReviewBoard <a href='"+rb_url+'/r/'+rb_review_request_id+"'>#"+rb_review_request_id+"</a>", 1);
+    }
+    else {
+      notify("Pasting to ReviewBoard failed :(.", -1);
+      Controller.log_(upload.responseText);
+    }
+  }
+	upload.open('POST', rb_url+'/api/json/reviewrequests/'+rb_review_request_id+'/diff/new/',false);
+  upload.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  upload.setRequestHeader('Content-type', content_type(rb_boundary));
+  upload.setRequestHeader('Content-Length', rb_content.length);
+  upload.setRequestHeader('Cookie', rb_cookie);
+	try {
+		upload.send(rb_content);
+	} catch(e) {
+		notify("Pasting to ReviewBoard failed: " + e, -1);
+	}
+}
+
 var setGravatar = function(email, image) {
 	if (Controller && !Controller.isReachable_("www.gravatar.com"))
 		return;

@@ -12,6 +12,30 @@
 @implementation PBPrefsWindowController
 
 # pragma mark DBPrefsWindowController overrides
+- (void) awakeFromNib {
+  NSLog(@"EN AWAKE FROM NOB");
+  NSNumber *onoff = [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardEnable"];
+  if (onoff != NULL) {
+    if([onoff intValue]==0) {
+      [reviewBoardEnabled setState:NSOffState];
+    } else {
+      [reviewBoardEnabled setState:NSOnState];
+    }
+    [self reviewBoardEnableEdit:reviewBoardEnabled];
+  }
+  id url = [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardUrl"];
+  if (url != NULL) {
+    [reviewBoardUrl setStringValue:url];
+  }
+  id username = [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardUsername"];
+  if (username != NULL) {
+    [reviewBoardUsername setStringValue:username];
+  }
+  id password = [[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardPassword"];
+  if (password != NULL) {
+    [reviewBoardPassword setStringValue:password];
+  }
+}
 
 - (void)setupToolbar
 {
@@ -20,7 +44,10 @@
 	// INTERGRATION
 	[self addView:integrationPrefsView label:@"Integration" image:[NSImage imageNamed:NSImageNameNetwork]];
 	// UPDATES
-	[self addView:updatesPrefsView label:@"Updates"];
+	[self addView:updatesPrefsView label:@"Updates" image:[NSImage imageNamed:@"Updates"]];
+  // REVIEWBOARD
+	[self addView:reviewBoardPrefsView label:@"ReviewBoard" image:[NSImage imageNamed:@"ReviewBoard"]];
+
 }
 
 #pragma mark -
@@ -36,6 +63,42 @@
 {
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"gitExecutable"];
 }
+
+- (IBAction) reviewBoardEnableEdit: sender
+{
+  BOOL newBtnState = [sender state];
+  if (newBtnState == NSOnState) {
+    [reviewBoardUrl setEnabled:YES];
+    [reviewBoardUsername setEnabled:YES];
+    [reviewBoardPassword setEnabled:YES];
+  } else {
+    [reviewBoardUrl setEnabled:NO];
+    [reviewBoardUsername setEnabled:NO];
+    [reviewBoardPassword setEnabled:NO];
+  }
+  NSNumber *enabled = [NSNumber numberWithBool:newBtnState == NSOnState];
+	[[NSUserDefaults standardUserDefaults] setObject:enabled
+                                            forKey:@"ReviewBoardEnable"];
+}
+
+- (IBAction) reviewBoardUrlEdit: sender
+{
+   [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[sender stringValue]
+                                             forKey:@"ReviewBoardUrl"];
+}
+
+- (IBAction) reviewBoardUsernameEdit: sender
+{
+  [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[sender stringValue]
+                                            forKey:@"ReviewBoardUsername"];
+}
+
+- (IBAction) ReviewBoardPasswordEdit: sender
+{
+  [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[sender stringValue]
+                                            forKey:@"ReviewBoardPassword"];
+}
+
 
 - (void)pathCell:(NSPathCell *)pathCell willDisplayOpenPanel:(NSOpenPanel *)openPanel
 {

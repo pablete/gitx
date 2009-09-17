@@ -121,6 +121,20 @@
 	return flags > 0;
 }
 
+- (BOOL) getconfig:(NSString *)feature
+{
+	if([feature isEqualToString:@"gravatar"])
+		return [PBGitDefaults isGravatarEnabled];
+	else if([feature isEqualToString:@"gist"])
+		return [PBGitDefaults isGistEnabled];
+	else if([feature isEqualToString:@"confirmGist"])
+		return [PBGitDefaults confirmPublicGists];
+	else if([feature isEqualToString:@"publicGist"])
+		return [PBGitDefaults isGistPublic];
+	else
+		return YES;
+}
+
 - (BOOL) isFeatureEnabled:(NSString *)feature
 {
 	if([feature isEqualToString:@"gravatar"])
@@ -131,6 +145,8 @@
 		return [PBGitDefaults confirmPublicGists];
 	else if([feature isEqualToString:@"publicGist"])
 		return [PBGitDefaults isGistPublic];
+	else if([feature isEqualToString:@"reviewBoard"])
+		return [[[NSUserDefaults standardUserDefaults] objectForKey:@"ReviewBoardEnable"] intValue] == NSOnState;
 	else
 		return YES;
 }
