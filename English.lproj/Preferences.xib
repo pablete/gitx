@@ -36,6 +36,12 @@
 			<object class="NSCustomObject" id="1004">
 				<string key="NSClassName">NSApplication</string>
 			</object>
+			<object class="NSCustomObject" id="844257713">
+				<string key="NSClassName">SUUpdater</string>
+			</object>
+			<object class="NSUserDefaultsController" id="557723770">
+				<bool key="NSSharedInstance">YES</bool>
+			</object>
 			<object class="NSCustomView" id="1005">
 				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
@@ -439,12 +445,6 @@
 				</object>
 				<string key="NSFrameSize">{239, 54}</string>
 				<string key="NSClassName">NSView</string>
-			</object>
-			<object class="NSCustomObject" id="844257713">
-				<string key="NSClassName">SUUpdater</string>
-			</object>
-			<object class="NSUserDefaultsController" id="557723770">
-				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomView" id="263788152">
 				<reference key="NSNextResponder"/>
@@ -1017,6 +1017,46 @@
 						<reference key="destination" ref="237556568"/>
 					</object>
 					<int key="connectionID">159</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="563270115"/>
+						<reference key="destination" ref="671720303"/>
+					</object>
+					<int key="connectionID">160</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="671720303"/>
+						<reference key="destination" ref="218035988"/>
+					</object>
+					<int key="connectionID">161</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="218035988"/>
+						<reference key="destination" ref="237556568"/>
+					</object>
+					<int key="connectionID">163</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="237556568"/>
+						<reference key="destination" ref="563270115"/>
+					</object>
+					<int key="connectionID">164</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="263788152"/>
+						<reference key="destination" ref="563270115"/>
+					</object>
+					<int key="connectionID">165</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1649,7 +1689,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{94, 720}, {400, 139}}</string>
+					<string>{{139, 727}, {400, 139}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableArray">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1699,7 +1739,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">159</int>
+			<int key="maxID">165</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
