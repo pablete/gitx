@@ -156,7 +156,7 @@ var reviewboard_post = function(rb_repository_id) {
 	var upload = new XMLHttpRequest();
   upload.onreadystatechange = function() {
     if (upload.readyState == 4 && upload.status >= 200 && upload.status < 300) {
-      notify("Code uploaded to ReviewBoard <a href='"+rb_url+'/r/'+rb_review_request_id+"'>#"+rb_review_request_id+"</a>", 1);
+      notify("Diff uploaded to ReviewBoard <a target='_new' targethref='"+rb_url+'/r/'+rb_review_request_id+"'>#"+rb_review_request_id+"</a>", 1);
     }
     else {
       notify("Pasting to ReviewBoard failed :(.", -1);
